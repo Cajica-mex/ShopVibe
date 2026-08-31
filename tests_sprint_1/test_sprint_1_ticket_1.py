@@ -20,17 +20,55 @@ class TestSprint1Ticket1(unittest.TestCase):
         self.db_path = "shopvibe.db"
         if os.path.exists(self.db_path):
             os.remove(self.db_path)
+            
+        self.create_tables_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/create_tables.py'))
+        self.backfill_job_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/backfill_job.py'))
 
-    def tearDown(self):
-        # We leave the database intact for manual inspections by the student,
-        # but clean it up if needed.
-        pass
+    def test_scratch_files_conventions(self):
+        # 1. Verify files exist
+        self.assertTrue(os.path.exists(self.create_tables_path), "Error: No se encontró el archivo 'src/create_tables.py'. Debes crearlo desde cero.")
+        self.assertTrue(os.path.exists(self.backfill_job_path), "Error: No se encontró el archivo 'src/backfill_job.py'. Debes crearlo desde cero.")
+        log_success("Archivos src/create_tables.py y src/backfill_job.py creados desde cero.")
+
+        # 2. Inspect src/create_tables.py content
+        with open(self.create_tables_path, "r", encoding="utf-8") as f:
+            create_code = f.read()
+            
+        self.assertIn("close(", create_code, "Error en src/create_tables.py: Recuerda llamar a .close() para cerrar la conexión a la base de datos.")
+        self.assertTrue(
+            'if __name__ == "__main__":' in create_code or "if __name__ == '__main__':" in create_code,
+            "Error en src/create_tables.py: Recuerda estructurar la ejecución del script con if __name__ == '__main__':"
+        )
+        self.assertTrue(
+            'db_path = "shopvibe.db"' in create_code or "db_path = 'shopvibe.db'" in create_code,
+            "Error en src/create_tables.py: Define db_path = 'shopvibe.db'"
+        )
+        self.assertTrue(
+            'schema_path = "schema.sql"' in create_code or "schema_path = 'schema.sql'" in create_code,
+            "Error en src/create_tables.py: Define schema_path = 'schema.sql'"
+        )
+        log_success("src/create_tables.py cumple con todas las variables locales, cierre de conexiones y bloque main estándar.")
+
+        # 3. Inspect src/backfill_job.py content
+        with open(self.backfill_job_path, "r", encoding="utf-8") as f:
+            backfill_code = f.read()
+            
+        self.assertIn("close(", backfill_code, "Error en src/backfill_job.py: Recuerda llamar a .close() para cerrar la conexión a la base de datos.")
+        self.assertTrue(
+            'if __name__ == "__main__":' in backfill_code or "if __name__ == '__main__':" in backfill_code,
+            "Error en src/backfill_job.py: Recuerda estructurar la ejecución del script con if __name__ == '__main__':"
+        )
+        self.assertIn("def run_backfill(", backfill_code, "Error en src/backfill_job.py: Define la función run_backfill() en el script.")
+        log_success("src/backfill_job.py cumple con la función run_backfill(), cierre de conexiones y bloque main estándar.")
 
     def test_database_ingestion_pipeline(self):
-        # 1. Verify schema creation via create_tables.py
-        script_create = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/create_tables.py'))
+        # We need this to ensure the files exist before running subprocess
+        if not os.path.exists(self.create_tables_path) or not os.path.exists(self.backfill_job_path):
+            self.skipTest("Ignorando pipeline de base de datos debido a que los archivos del código no existen todavía.")
+
+        # 1. Run create_tables.py
         try:
-            subprocess.run([sys.executable, script_create], check=True, capture_output=True, text=True)
+            subprocess.run([sys.executable, self.create_tables_path], check=True, capture_output=True, text=True)
             log_success("src/create_tables.py ejecutado correctamente sin errores.")
         except subprocess.CalledProcessError as e:
             self.fail(f"El script src/create_tables.py falló: {e.stderr}")
@@ -67,10 +105,9 @@ class TestSprint1Ticket1(unittest.TestCase):
             
         conn.close()
 
-        # 3. Verify data backfill ingestion via backfill_job.py
-        script_backfill = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/backfill_job.py'))
+        # 3. Run backfill_job.py
         try:
-            subprocess.run([sys.executable, script_backfill], check=True, capture_output=True, text=True)
+            subprocess.run([sys.executable, self.backfill_job_path], check=True, capture_output=True, text=True)
             log_success("src/backfill_job.py ejecutado correctamente sin errores.")
         except subprocess.CalledProcessError as e:
             self.fail(f"El script src/backfill_job.py falló: {e.stderr}")
