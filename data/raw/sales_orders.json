@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1001,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-26",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 2,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1002,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026-08-26",
+    "articulos": [
+      {
+        "producto_id": 4,
+        "cantidad": 1,
+        "precio": 45.5
+      }
+    ]
+  },
+  {
+    "id": 1003,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026-08-26",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 1,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1004,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026-08-26",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 2,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1005,
+    "cliente_id": 10,
+    "cliente_name": "Juan Perez",
+    "email": "juan.perez@example.com",
+    "fecha": "2026.08.26",
+    "articulos": [
+      {
+        "producto_id": 1,
+        "cantidad": 1,
+        "precio": 25.99
+      }
+    ]
+  },
+  {
+    "id": 1006,
+    "cliente_id": 10,
+    "cliente_name": "Juan Perez",
+    "email": "juan.perez@example.com",
+    "fecha": "2026/08/26",
+    "articulos": [
+      {
+        "producto_id": 4,
+        "cantidad": 1,
+        "precio": 45.5
+      }
+    ]
+  },
+  {
+    "id": 1007,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026-08-27",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 2,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1008,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-27",
+    "articulos": [
+      {
+        "producto_id": 1,
+        "cantidad": 2,
+        "precio": 25.99
+      }
+    ]
+  },
+  {
+    "id": 1009,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-27",
+    "articulos": [
+      {
+        "producto_id": 1,
+        "cantidad": 3,
+        "precio": 25.99
+      }
+    ]
+  },
+  {
+    "id": 1010,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026.08.27",
+    "articulos": [
+      {
+        "producto_id": 2,
+        "cantidad": 3,
+        "precio": 59.99
+      }
+    ]
+  },
+  {
+    "id": 1011,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026-08-27",
+    "articulos": [
+      {
+        "producto_id": 5,
+        "cantidad": 2,
+        "precio": 19.99
+      }
+    ]
+  },
+  {
+    "id": 1012,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026/08/27",
+    "articulos": [
+      {
+        "producto_id": 5,
+        "cantidad": 2,
+        "precio": 19.99
+      }
+    ]
+  },
+  {
+    "id": 1013,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026-08-28",
+    "articulos": [
+      {
+        "producto_id": 4,
+        "cantidad": 3,
+        "precio": 45.5
+      }
+    ]
+  },
+  {
+    "id": 1014,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-28",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 3,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1015,
+    "cliente_id": 10,
+    "cliente_name": "Juan Perez",
+    "email": "juan.perez@example.com",
+    "fecha": "2026.08.28",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 3,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1016,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-28",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 3,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1017,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026-08-28",
+    "articulos": [
+      {
+        "producto_id": 5,
+        "cantidad": 1,
+        "precio": 19.99
+      }
+    ]
+  },
+  {
+    "id": 1018,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026/08/28",
+    "articulos": [
+      {
+        "producto_id": 5,
+        "cantidad": 1,
+        "precio": 19.99
+      }
+    ]
+  },
+  {
+    "id": 1019,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026-08-29",
+    "articulos": [
+      {
+        "producto_id": 2,
+        "cantidad": 2,
+        "precio": 59.99
+      }
+    ]
+  },
+  {
+    "id": 1020,
+    "cliente_id": 13,
+    "cliente_name": "Ana Lopez",
+    "email": "ana.lopez@example.com",
+    "fecha": "2026.08.29",
+    "articulos": [
+      {
+        "producto_id": 1,
+        "cantidad": 1,
+        "precio": 25.99
+      }
+    ]
+  }
+]
