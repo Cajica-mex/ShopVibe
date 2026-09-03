@@ -1,0 +1,5 @@
+id,customer_name,email,address,signup_date
+10,Juan Perez,juan.perez@example.com,"123 Main St, New York, NY 10001",2026-08-29
+11,Maria Rodriguez,maria.rodriguez@example.com,"456 Market St, Los Angeles, CA 90001",2026-08-19
+12,Carlos Gomez,carlos.gomez@example.com,"789 Elm St, Chicago, IL 60601",2026-08-09
+13,Ana Lopez,ana.lopez@example.com,"321 Oak St, Houston, TX 77001",2026-07-30

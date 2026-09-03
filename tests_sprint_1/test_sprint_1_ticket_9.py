@@ -1,30 +1,17 @@
 # test_sprint_1_ticket_9.py
-import os
-import sys
-import unittest
+import os, sys, unittest, glob, duckdb
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+def log_success(msg):
+    print(f"\n[OK] {msg}")
 
-class TestSprint1Ticket9(unittest.TestCase):
-    def test_dead_letter_logging(self):
-        try:
-            from audit import registrar_descarte
-        except ImportError:
-            self.fail("No se pudo importar registrar_descarte desde audit")
-            
-        log_file = "descartes.log"
-        if os.path.exists(log_file):
-            os.remove(log_file)
-            
-        registrar_descarte("EMAIL_INVALIDO", {"id": 9, "email": "bad"})
-        self.assertTrue(os.path.exists(log_file))
-        with open(log_file, 'r') as f:
-            content = f.read()
-        self.assertIn("EMAIL_INVALIDO", content)
-        self.assertIn("bad", content)
-        
-        if os.path.exists(log_file):
-            os.remove(log_file)
+class TestTicket009(unittest.TestCase):
+    def test_geographic_standardization(self):
+        con = duckdb.connect(':memory:')
+        cust_files = glob.glob('data/silver/customers/*.parquet')
+        self.assertTrue(len(cust_files) > 0, "No se encontraron clientes saneados en data/silver/customers/.")
+        invalid_states = con.execute(f"SELECT count(*) FROM read_parquet('{cust_files[0]}') WHERE length(state) != 2 AND state != 'UNKNOWN'").fetchone()[0]
+        self.assertEqual(invalid_states, 0, "Los estados deben ser códigos ISO de 2 letras o 'UNKNOWN'.")
+        log_success("TICKET-JR-009: Estandarización geográfica de envíos superada con éxito.")
 
 if __name__ == '__main__':
     unittest.main()

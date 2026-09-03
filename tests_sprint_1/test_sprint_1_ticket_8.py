@@ -1,21 +1,17 @@
 # test_sprint_1_ticket_8.py
-import os
-import sys
-import unittest
+import os, sys, unittest, glob, duckdb
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+def log_success(msg):
+    print(f"\n[OK] {msg}")
 
-class TestSprint1Ticket8(unittest.TestCase):
-    def test_csv_delimiter_repair(self):
-        try:
-            from parse_csv import parsear_linea_csv
-        except ImportError:
-            self.fail("No se pudo importar parsear_linea_csv desde parse_csv")
-            
-        linea = '1,"Remera de Algodón, Classic Blue",25.99,Ropa'
-        res = parsear_linea_csv(linea)
-        self.assertEqual(len(res), 4)
-        self.assertEqual(res[1], "Remera de Algodón, Classic Blue")
+class TestTicket008(unittest.TestCase):
+    def test_contact_cleansing(self):
+        con = duckdb.connect(':memory:')
+        cust_files = glob.glob('data/silver/customers/*.parquet')
+        self.assertTrue(len(cust_files) > 0, "No se encontraron clientes saneados en data/silver/customers/.")
+        invalid_emails = con.execute(f"SELECT count(*) FROM read_parquet('{cust_files[0]}') WHERE email NOT LIKE '%@%.%' OR email IS NULL").fetchone()[0]
+        self.assertEqual(invalid_emails, 0, f"Se encontraron {invalid_emails} correos con formato inválido en silver_customers.")
+        log_success("TICKET-JR-008: Limpieza y validación de entidades de contacto superada con éxito.")
 
 if __name__ == '__main__':
     unittest.main()

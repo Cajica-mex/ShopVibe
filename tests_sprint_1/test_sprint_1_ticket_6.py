@@ -1,32 +1,18 @@
 # test_sprint_1_ticket_6.py
-import os
-import sys
-import unittest
+import os, sys, unittest, glob, duckdb
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+def log_success(msg):
+    print(f"\n[OK] {msg}")
 
-class TestSprint1Ticket6(unittest.TestCase):
-    def test_flattening(self):
-        try:
-            from clean_data import aplanar_orden
-        except ImportError:
-            self.fail("No se pudo importar aplanar_orden desde clean_data")
-            
-        test_order = {
-            "id": 500,
-            "cliente_id": 9,
-            "fecha": "2026-08-20",
-            "articulos": [
-                {"producto_id": 2, "cantidad": 2, "precio": 10.0},
-                {"producto_id": 3, "cantidad": 1, "precio": 15.0}
-            ]
-        }
-        res = aplanar_orden(test_order)
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["monto"], 20.0)
-        self.assertEqual(res[1]["monto"], 15.0)
-        self.assertEqual(res[0]["cliente_id"], 9)
-        self.assertEqual(res[0]["id_orden"], 500)
+class TestTicket006(unittest.TestCase):
+    def test_deduplication(self):
+        con = duckdb.connect(':memory:')
+        orders_files = glob.glob('data/silver/orders/*.parquet')
+        self.assertTrue(len(orders_files) > 0, "Faltan archivos en data/silver/orders/.")
+        total_rows = con.execute(f"SELECT count(*) FROM read_parquet('{orders_files[0]}')").fetchone()[0]
+        unique_ids = con.execute(f"SELECT count(DISTINCT id) FROM read_parquet('{orders_files[0]}')").fetchone()[0]
+        self.assertEqual(total_rows, unique_ids, f"Hay duplicados en silver_orders ({total_rows} filas vs {unique_ids} IDs únicos).")
+        log_success("TICKET-JR-006: Deduplicación determinista con ROW_NUMBER() superada con éxito.")
 
 if __name__ == '__main__':
     unittest.main()

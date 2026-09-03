@@ -2,44 +2,54 @@
 
 ¡Bienvenido a tu primer día en **ShopVibe** como Junior Data Engineer!
 
-## Contexto de Negocio
-ShopVibe es una plataforma de e-commerce de moda de rápido crecimiento. Actualmente, las transacciones de ventas y el catálogo de productos se generan como archivos semiestructurados dispersos (JSON y CSV). El equipo analítico y de marketing requiere centralizar esta información de forma estructurada en una base de datos analítica local (SQLite) para generar reportes consistentes de facturación y detectar tendencias.
+---
 
-## Tus Objetivos en este Sprint 1
-Deberás construir el pipeline inicial de Extracción, Limpieza y Carga (ETL) local para ShopVibe:
-1.  **Modelo de Datos (`schema.sql`):** Definir el Star Schema inicial en SQLite (tablas de dimensión `dim_products`, `dim_customers` y la tabla de hechos `fact_sales` vinculada).
-2.  **Calidad y Limpieza (`src/clean_data.py`):** Escribir funciones modulares en Python para validar correos, comprobar importes mayores a cero, deduplicar transacciones por ID, aplanar compras anidadas de JSON y normalizar estados/direcciones.
-3.  **Parsers Auxiliares (`src/parse_csv.py` y `src/audit.py`):** Resolver el parseo de comas mal formadas en CSVs de proveedores externos y registrar auditorías de descarte en `descartes.log` sin detener el pipeline.
-4.  **Carga e Integración (`src/db_loader.py` y `src/parquet_loader.py`):** Programar la inserción incremental (Append-only) validando la unicidad del ID de transacción y cargar datos estructurados desde archivos Parquet de inventario.
-5.  **Orquestación (`src/pipeline.py`):** Unificar y encadenar todo el flujo de datos con manejo de excepciones y control transaccional (commit/rollback) ante fallos intermitentes.
+## 📈 Contexto de Negocio
+ShopVibe acaba de cerrar su **primera ronda semilla de inversión** y las ventas diarias se dispararon un **400%**. Hasta ayer, la analítica dependía de scripts manuales en Python que leían volcados desordenados de archivos JSON y CSV exportados directamente del checkout hacia carpetas locales (`data/raw/`).
+
+El sistema actual colapsó:
+* Los reportes en hojas de cálculo tardan horas en abrirse.
+* Las métricas de ingresos no cuadran por órdenes duplicadas causadas por reintentos de red en la app móvil.
+* Los volcados contienen registros corruptos (precios negativos, correos sin formato, esquemas rotos).
+* Finanzas y Operaciones no tienen una fuente única de la verdad.
+
+Fuiste contratado como el **primer Data Engineer Junior** para detener el caos operativo: construirás desde cero un almacén analítico local estructurado bajo la **Arquitectura Medallion** utilizando **DuckDB y Parquet**, asegurando trazabilidad, contratos de datos y un modelo dimensional listo para ser explotado.
 
 ---
 
-## Estructura del Repositorio
-*   `schema.sql`: DDL de base de datos analítica.
-*   `src/`: Carpeta con los módulos de código Python.
-    *   `clean_data.py`: Módulo de validación y limpieza de strings/números.
-    *   `db_loader.py`: Ingestor relacional incremental.
-    *   `parse_csv.py`: Módulo parseador de delimitadores CSV.
-    *   `audit.py`: Logger local de registros corruptos descartados.
-    *   `parquet_loader.py`: Ingestor de archivos Parquet.
-    *   `pipeline.py`: Orquestador principal del ETL.
-*   `scripts/`: Utilidades del sistema.
-    *   `traffic_generator.py`: Generador de compras sintéticas crudas.
-*   `tests/`: Suite de validaciones automáticas.
-    *   `test_sprint1.py`: Pruebas de unittest para verificar cumplimiento de los 15 tickets.
+## 🎯 ¿Qué valor aportarás en el Sprint 1?
+1. **Desacoplar la analítica de los archivos operativos:** Centralizar los volcados crudos en una capa inmutable y trazable (**Bronze**) en formato columnar Parquet de alta compresión.
+2. **Garantizar calidad y confianza en los datos:** Implementar una capa intermedia (**Silver**) donde se eliminan duplicados, se corrigen esquemas y se desvían registros inválidos a cuarentena (Dead-Letter Queue) sin detener el flujo de datos.
+3. **Habilitar el autoservicio analítico (Single Source of Truth):** Modelar una capa final (**Gold**) bajo un esquema en estrella (**Star Schema** con hechos y dimensiones) particionado eficientemente por año y mes para habilitar *partition pruning*.
+4. **Automatizar la ejecución:** Ensamblar un orquestador E2E reproducible y tolerante a fallos (`src/pipeline.py`).
 
 ---
 
-## Cómo Ejecutar y Probar tu Progreso
+## 🗂️ Estructura del Repositorio
+* `data/raw/`: Volcados crudos del checkout (`sales_orders.json`, `products.csv`, `customers.csv`).
+* `data/bronze/`: Capa Bronze inmutable en Parquet (`sales/`, `customers/`, `products/`).
+* `data/silver/`: Capa Silver limpia y normalizada (`orders/`, `order_items/`, `customers/`, `quarantine/`).
+* `data/gold/`: Capa Gold dimensional (`dim_customers/`, `dim_products/`, `fact_sales/`).
+* `schema.sql`: Definiciones DDL compatibles con DuckDB para vistas y tablas de Silver y Gold.
+* `src/pipeline.py`: Pipeline principal y orquestador ejecutable.
+* `scripts/traffic_generator.py`: Generador de compras sintéticas crudas con inyección de anomalías.
+* `tests/test_sprint1.py`: Suite de 15 pruebas unitarias globales.
+* `tests_sprint_1/`: Tests unitarios independientes por cada ticket individual (`test_sprint_1_ticket_X.py`).
 
-1.  **Generar datos de prueba:**
-    Para generar archivos de ventas crudos en la carpeta `data/raw/` con anomalías inyectadas, corre:
-    ```bash
-    python scripts/traffic_generator.py --anomalies-all
-    ```
-2.  **Ejecutar los Tests de Calidad:**
-    Ejecuta el suite de pruebas en cualquier momento para ver tu porcentaje de avance y verificar qué tickets de Sprint 1 has cumplido:
-    ```bash
-    python -m unittest tests/test_sprint1.py
-    ```
+---
+
+## 🛠️ Herramientas y Ejecución
+Asegúrate de tener instaladas las dependencias:
+```bash
+pip install duckdb
+```
+
+### Ejecutar Tests
+Para comprobar el progreso de un ticket específico:
+```bash
+python -m unittest tests_sprint_1/test_sprint_1_ticket_1.py
+```
+O para correr la suite completa del Sprint 1:
+```bash
+python -m unittest tests/test_sprint1.py
+```

@@ -1,21 +1,18 @@
 # test_sprint_1_ticket_4.py
-import os
-import sys
-import unittest
+import os, sys, unittest, glob, duckdb
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+def log_success(msg):
+    print(f"\n[OK] {msg}")
 
-class TestSprint1Ticket4(unittest.TestCase):
-    def test_amount_validation(self):
-        try:
-            from clean_data import es_importe_valido
-        except ImportError:
-            self.fail("No se pudo importar es_importe_valido desde clean_data")
-            
-        self.assertTrue(es_importe_valido(25.99))
-        self.assertFalse(es_importe_valido(0))
-        self.assertFalse(es_importe_valido(-10.5))
-        self.assertFalse(es_importe_valido(None))
+class TestTicket004(unittest.TestCase):
+    def test_temporal_normalization(self):
+        con = duckdb.connect(':memory:')
+        orders_files = glob.glob('data/silver/orders/*.parquet')
+        self.assertTrue(len(orders_files) > 0, "No se encontraron archivos en data/silver/orders/.")
+        schema = con.execute(f"DESCRIBE SELECT * FROM read_parquet('{orders_files[0]}')").fetchall()
+        col_types = {row[0]: row[1] for row in schema}
+        self.assertTrue('order_timestamp' in col_types or 'fecha' in col_types, "Falta columna de timestamp normalizado.")
+        log_success("TICKET-JR-004: Normalización temporal ISO-8601 UTC en silver_orders superada con éxito.")
 
 if __name__ == '__main__':
     unittest.main()

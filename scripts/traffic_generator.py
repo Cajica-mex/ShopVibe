@@ -85,16 +85,24 @@ def generate_data(output_dir, inject_email, inject_amount, inject_duplicates, in
         }
         orders.append(ord_obj)
         
-        # Inject duplicate order anomalies
-        if inject_duplicates and i % 9 == 0:
-            orders.append(ord_obj)  # Append identical duplicate
-            
-    with open(sales_file, 'w', encoding='utf-8') as f:
-        json.dump(orders, f, indent=2, ensure_ascii=False)
-        
+    # 3. Generate customers catalog (CSV)
+    customers_file = os.path.join(output_dir, 'customers.csv')
+    with open(customers_file, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(["id", "customer_name", "email", "address", "signup_date"])
+        states = ["123 Main St, New York, NY 10001", "456 Market St, Los Angeles, CA 90001", "789 Elm St, Chicago, IL 60601", "321 Oak St, Houston, TX 77001"]
+        for idx, c in enumerate(customers):
+            c_email = c["email"]
+            if inject_email and idx == 0:
+                c_email = "invalid_email_no_at"
+            addr = states[idx % len(states)]
+            signup = (base_date - timedelta(days=idx * 10)).strftime("%Y-%m-%d")
+            writer.writerow([c["id"], c["customer_name"], c_email, addr, signup])
+
     print(f"Data generation complete. Outputs saved in {output_dir}")
     print(f"Products: {products_file}")
     print(f"Orders: {sales_file}")
+    print(f"Customers: {customers_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="ShopVibe Purchase Traffic Generator")
