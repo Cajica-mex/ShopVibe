@@ -1,0 +1,13 @@
+﻿# Soluciones internas para testing/validación (no visibles en repo remoto)
+solutions/
+
+# Archivos de cache de Python
+__pycache__/
+*.py[cod]
+*.class
+
+# Datos generados por ejecuciones locales de pipelines
+data/bronze/**/*.parquet
+data/silver/**/*.parquet
+data/gold/**/*.parquet
+data/**/*.parquet
