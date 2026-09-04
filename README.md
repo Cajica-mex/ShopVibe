@@ -31,7 +31,7 @@ Fuiste contratado como el **primer Data Engineer Junior** para detener el caos o
 * `data/silver/`: Capa Silver limpia y normalizada (`orders/`, `order_items/`, `customers/`, `quarantine/`).
 * `data/gold/`: Capa Gold dimensional (`dim_customers/`, `dim_products/`, `fact_sales/`).
 * `schema.sql`: Definiciones DDL compatibles con DuckDB para vistas y tablas de Silver y Gold.
-* `src/pipeline.py`: Pipeline principal y orquestador ejecutable.
+* `src/`: Módulos de desarrollo de los tickets (ej. `ingest_bronze_sales.py`) y orquestador principal (`pipeline.py`).
 * `scripts/traffic_generator.py`: Generador de compras sintéticas crudas con inyección de anomalías.
 * `tests/test_sprint1.py`: Suite de 15 pruebas unitarias globales.
 * `tests_sprint_1/`: Tests unitarios independientes por cada ticket individual (`test_sprint_1_ticket_X.py`).

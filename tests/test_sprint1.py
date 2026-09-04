@@ -26,6 +26,7 @@ class TestSprint1(unittest.TestCase):
 
     # --- TICKET 001: Ingesta cruda inmutable de transacciones ---
     def test_ticket_001(self):
+        self.assertTrue(os.path.exists("src/ingest_bronze_sales.py"), "Error TICKET-JR-001: Debes crear el script de ingesta en 'src/ingest_bronze_sales.py'.")
         parquet_files = glob.glob("data/bronze/sales/*.parquet")
         self.assertTrue(len(parquet_files) > 0, "Error TICKET-JR-001: No se encontraron archivos Parquet en data/bronze/sales/.")
         
