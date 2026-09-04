@@ -278,5 +278,33 @@
         "precio": 25.99
       }
     ]
+  },
+  {
+    "id": 1001,
+    "cliente_id": 11,
+    "cliente_name": "Maria Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "fecha": "2026-08-20",
+    "articulos": [
+      {
+        "producto_id": 3,
+        "cantidad": 2,
+        "precio": 89.99
+      }
+    ]
+  },
+  {
+    "id": 1002,
+    "cliente_id": 12,
+    "cliente_name": "Carlos Gomez",
+    "email": "carlos.gomez@example.com",
+    "fecha": "2026-08-21",
+    "articulos": [
+      {
+        "producto_id": 4,
+        "cantidad": 1,
+        "precio": 45.5
+      }
+    ]
   }
 ]

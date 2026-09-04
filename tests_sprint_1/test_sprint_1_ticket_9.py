@@ -6,6 +6,8 @@ def log_success(msg):
 
 class TestTicket009(unittest.TestCase):
     def test_geographic_standardization(self):
+        script_path = 'src/standardize_geo.py'
+        self.assertTrue(os.path.exists(script_path), f"Error TICKET-JR-009: Debes crear e implementar el script '{script_path}'.")
         con = duckdb.connect(':memory:')
         cust_files = glob.glob('data/silver/customers/*.parquet')
         self.assertTrue(len(cust_files) > 0, "No se encontraron clientes saneados en data/silver/customers/.")
