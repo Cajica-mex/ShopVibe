@@ -7,8 +7,11 @@ def log_success(msg):
 
 class TestTicket014(unittest.TestCase):
     def test_watermark_incremental(self):
-        from pipeline import run_silver
-        self.assertTrue(callable(run_silver), "run_silver debe ser ejecutable.")
+        try:
+            from incremental_orders import run_incremental as inc_func
+        except ImportError:
+            from pipeline import run_silver as inc_func
+        self.assertTrue(callable(inc_func), "La función de carga incremental debe ser ejecutable.")
         log_success("TICKET-JR-014: Ingesta incremental basada en marcas de agua superada con éxito.")
 
 if __name__ == '__main__':

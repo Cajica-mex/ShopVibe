@@ -7,7 +7,10 @@ def log_success(msg):
 
 class TestTicket003(unittest.TestCase):
     def test_integrity_audit(self):
-        from pipeline import auditar_carga_bronze
+        try:
+            from audit_bronze import auditar_carga_bronze
+        except ImportError:
+            from pipeline import auditar_carga_bronze
         con = duckdb.connect(':memory:')
         raw_orders = 'data/raw/sales_orders.json'
         bronze_sales = glob.glob('data/bronze/sales/*.parquet')
